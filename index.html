@@ -1,334 +1,80 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramadan 2026 Ultimate Final</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Drive Videos</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
-body{color:white;overflow-x:hidden}
-
-/* ===== WELCOME ===== */
-#welcomePage{
- position:fixed;inset:0;z-index:10;
- background:linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.9)),
- url("https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1974&auto=format&fit=crop");
- background-size:cover;
- display:flex;flex-direction:column;
- justify-content:center;align-items:center;text-align:center;
-}
-
-.shimmer{
- font-family:'Playfair Display',serif;
- font-size:32px;
- background:linear-gradient(90deg,#FFD700,#FFF8DC,#FFD700);
- background-size:200%;
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
- animation:shine 3s linear infinite;
-}
-@keyframes shine{to{background-position:200% center}}
-
-#welcomePage button{
- margin-top:20px;padding:10px 30px;
- border:none;border-radius:30px;background:#FFD700;cursor:pointer;
-}
-
-/* ===== MAIN ===== */
-#mainPage{
- display:none;
- min-height:100vh;
- background:
- linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.9)),
- url("https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1974&auto=format&fit=crop");
- background-size:cover;
- background-position:center;
- padding:40px 20px;
-}
-
-.card{
- background:rgba(255,255,255,.1);
- backdrop-filter:blur(15px);
- padding:20px;border-radius:20px;
- max-width:1000px;margin:auto;
- position:relative;
-}
-
-input{
- width:100%;padding:10px;
- border-radius:20px;border:none;text-align:center;
-}
-
-.suggestions{
- position:absolute;
- top:60px;left:0;right:0;
- background:white;color:black;
- border-radius:10px;
- max-height:200px;
- overflow-y:auto;
- display:none;
- z-index:1000;
-}
-
-.suggestions div{padding:8px;cursor:pointer}
-.suggestions div:hover{background:#FFD700}
-
-button{
- width:100%;padding:10px;
- border-radius:20px;border:none;
- background:#FFD700;margin-top:10px;cursor:pointer;
-}
-
-.section-title{
- margin-top:20px;font-weight:600;color:#FFD700;
-}
-
-.time-box{
- margin-top:10px;padding:10px;
- background:rgba(255,255,255,.15);
- border-radius:15px;
-}
-.time-box span{display:block;margin-top:5px;font-weight:600}
-
-.roza{margin-top:15px;color:#00F5D4;font-weight:bold}
-.countdown{margin-top:10px;font-weight:bold}
-
-table{
- width:100%;margin-top:20px;
- border-collapse:collapse;font-size:12px;
-}
-th,td{border-bottom:1px solid rgba(255,255,255,.3);padding:6px}
-th{color:#FFD700}
-.today{background:rgba(255,215,0,.3)}
+body{background:#0f172a;color:white;font-family:Arial;margin:0}
+header{background:#020617;padding:15px;display:flex;justify-content:space-between}
+button{padding:8px 15px;border:none;border-radius:6px;cursor:pointer}
+.logout{background:red;color:white}
+.container{padding:20px}
+.video-box{margin-bottom:30px;background:#1e293b;padding:15px;border-radius:12px}
+iframe{width:100%;height:220px;border-radius:10px}
+.login-box{max-width:350px;margin:100px auto}
+input{width:100%;padding:10px;margin:10px 0}
 </style>
 </head>
 
 <body>
 
-<!-- WELCOME -->
-<div id="welcomePage">
-<h1 class="shimmer">Ramadan Mubarak</h1>
-<p>Find accurate Sehri & Iftar times for your district.</p>
-<button onclick="enterApp()">Continue</button>
+<div id="loginPage" class="login-box">
+<h2>Login</h2>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="error" style="color:red;display:none;">Login Failed</p>
 </div>
 
-<!-- MAIN -->
-<div id="mainPage">
-<div class="card">
+<div id="homePage" style="display:none;">
+<header>
+<h3>🎬 Google Drive Videos</h3>
+<button class="logout" onclick="logout()">Logout</button>
+</header>
 
-<input id="city" placeholder="District (Dhaka)" autocomplete="off">
-<div id="suggestions" class="suggestions"></div>
+<div class="container">
 
-<button onclick="getTimes()">আজকের সময় দেখুন</button>
-
-<div class="roza" id="rozaCount"></div>
-
-<div class="section-title">🌙 সেহেরির সময়</div>
-<div class="time-box"><span id="sehriTime">--</span></div>
-
-<div class="section-title">🌇 ইফতারের সময়</div>
-<div class="time-box"><span id="iftarTime">--</span></div>
-
-<div class="section-title">🕌 ৫ ওয়াক্ত নামাজ</div>
-<div class="time-box">
-ফজর <span id="fajr">--</span>
-যোহর <span id="dhuhr">--</span>
-আসর <span id="asr">--</span>
-মাগরিব <span id="maghrib">--</span>
-এশা <span id="isha">--</span>
+<div class="video-box">
+<h4>Video 1</h4>
+<iframe src="https://drive.google.com/file/d/PUT_VIDEO_ID_HERE/preview" allow="autoplay"></iframe>
 </div>
 
-<div class="countdown" id="countdown"></div>
-
-<button onclick="loadCalendar()">৩০ দিনের ক্যালেন্ডার</button>
-<div id="calendar"></div>
-
-<button onclick="downloadFullPDF()">৩০ দিনের PDF</button>
+<div class="video-box">
+<h4>Video 2</h4>
+<iframe src="https://drive.google.com/file/d/PUT_VIDEO_ID_HERE/preview" allow="autoplay"></iframe>
+</div>
 
 </div>
 </div>
 
 <script>
+const USERNAME="admin";
+const PASSWORD="12345";
 
-const districts=["Bagerhat","Bandarban","Barguna","Barishal","Bhola","Bogura","Brahmanbaria",
-"Chandpur","Chattogram","Chuadanga","Cumilla","Cox's Bazar",
-"Dhaka","Dinajpur","Faridpur","Feni","Gaibandha","Gazipur","Gopalganj",
-"Habiganj","Jamalpur","Jashore","Jhalokathi","Jhenaidah","Joypurhat",
-"Khagrachhari","Khulna","Kishoreganj","Kurigram","Kushtia",
-"Lakshmipur","Lalmonirhat","Madaripur","Magura","Manikganj",
-"Meherpur","Moulvibazar","Munshiganj","Mymensingh",
-"Naogaon","Narail","Narayanganj","Narsingdi","Natore","Netrokona",
-"Nilphamari","Noakhali","Pabna","Panchagarh","Patuakhali","Pirojpur",
-"Rajbari","Rajshahi","Rangamati","Rangpur",
-"Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet",
-"Tangail","Thakurgaon"];
+function login(){
+    let u=document.getElementById("username").value;
+    let p=document.getElementById("password").value;
 
-const input=document.getElementById("city");
-const suggestionBox=document.getElementById("suggestions");
-
-input.addEventListener("input",function(){
- const value=this.value.toLowerCase();
- suggestionBox.innerHTML="";
- if(!value){suggestionBox.style.display="none";return;}
- districts.filter(d=>d.toLowerCase().includes(value))
- .forEach(d=>{
-  const div=document.createElement("div");
-  div.textContent=d;
-  div.onclick=()=>{input.value=d;suggestionBox.style.display="none";}
-  suggestionBox.appendChild(div);
- });
- suggestionBox.style.display="block";
-});
-
-document.addEventListener("click",function(e){
- if(!e.target.closest(".card")){
-  suggestionBox.style.display="none";
- }
-});
-
-function enterApp(){
- document.getElementById("welcomePage").style.display="none";
- document.getElementById("mainPage").style.display="block";
+    if(u===USERNAME && p===PASSWORD){
+        localStorage.setItem("loggedIn","true");
+        showHome();
+    }else{
+        document.getElementById("error").style.display="block";
+    }
 }
 
-const ramadanStart=new Date("2026-02-18");
-let currentTimes;
-
-function convert12(t){
- let clean=t.split(" ")[0];
- let [h,m]=clean.split(":");
- h=parseInt(h);
- let ampm=h>=12?"PM":"AM";
- h=h%12||12;
- return h+":"+m+" "+ampm;
+function logout(){
+    localStorage.removeItem("loggedIn");
+    location.reload();
 }
 
-function calculateRoza(){
- const today=new Date();
- const diff=Math.floor((today-ramadanStart)/(1000*60*60*24))+1;
- if(diff>0 && diff<=30){
-  document.getElementById("rozaCount").innerText=`আজ রমজানের ${diff} তম রোজা`;
- }
+function showHome(){
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("homePage").style.display="block";
 }
 
-async function getTimes(){
- const city=input.value||"Dhaka";
- const today=new Date();
- const day=String(today.getDate()).padStart(2,"0");
- const month=String(today.getMonth()+1).padStart(2,"0");
- const year=today.getFullYear();
- const date=`${day}-${month}-${year}`;
-
- const res=await fetch(
- `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Bangladesh&method=1&date=${date}`);
- const data=await res.json();
- const t=data.data.timings;
- currentTimes=t;
-
- document.getElementById("sehriTime").innerText=convert12(t.Fajr);
- document.getElementById("iftarTime").innerText=convert12(t.Maghrib);
-
- document.getElementById("fajr").innerText=convert12(t.Fajr);
- document.getElementById("dhuhr").innerText=convert12(t.Dhuhr);
- document.getElementById("asr").innerText=convert12(t.Asr);
- document.getElementById("maghrib").innerText=convert12(t.Maghrib);
- document.getElementById("isha").innerText=convert12(t.Isha);
-
- calculateRoza();
- startCountdown();
-}
-
-function startCountdown(){
- clearInterval(window.timer);
- window.timer=setInterval(()=>{
-  if(!currentTimes) return;
-  const now=new Date();
-  let mag=new Date();
-  let [h,m]=currentTimes.Maghrib.split(":");
-  mag.setHours(h,m,0,0);
-  if(now>mag)mag.setDate(mag.getDate()+1);
-  let diff=mag-now;
-  let hrs=Math.floor(diff/1000/60/60);
-  let mins=Math.floor((diff/1000/60)%60);
-  let secs=Math.floor((diff/1000)%60);
-  document.getElementById("countdown").innerText=
-  `ইফতার বাকি ${hrs} ঘন্টা ${mins} মিনিট ${secs} সেকেন্ড`;
- },1000);
-}
-
-/* ===== CALENDAR ===== */
-async function loadCalendar(){
- const city=input.value||"Dhaka";
- const todayISO=new Date().toISOString().split("T")[0];
-
- const feb=await fetch(
- `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=Bangladesh&method=1&month=2&year=2026`);
- const febData=await feb.json();
-
- const mar=await fetch(
- `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=Bangladesh&method=1&month=3&year=2026`);
- const marData=await mar.json();
-
- const all=[...febData.data,...marData.data];
-
- let html="<table><tr><th>Roza</th><th>Date</th><th>Sehri</th><th>Iftar</th></tr>";
- let roza=1;
-
- all.forEach(day=>{
-  if(day.date.hijri.month.number===9 && roza<=30){
-   const isToday=(day.date.gregorian.date===todayISO);
-   html+=`<tr class="${isToday?'today':''}">
-   <td>${roza}</td>
-   <td>${day.date.gregorian.date}</td>
-   <td>${convert12(day.timings.Fajr)}</td>
-   <td>${convert12(day.timings.Maghrib)}</td>
-   </tr>`;
-   roza++;
-  }
- });
-
- html+="</table>";
- document.getElementById("calendar").innerHTML=html;
-}
-
-/* ===== PDF ===== */
-async function downloadFullPDF(){
- const { jsPDF } = window.jspdf;
- const doc=new jsPDF();
- const city=input.value||"Dhaka";
-
- const feb=await fetch(
- `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=Bangladesh&method=1&month=2&year=2026`);
- const febData=await feb.json();
-
- const mar=await fetch(
- `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=Bangladesh&method=1&month=3&year=2026`);
- const marData=await mar.json();
-
- const all=[...febData.data,...marData.data];
-
- doc.setFontSize(16);
- doc.text(`Ramadan 2026 - ${city}`,20,20);
-
- let y=30,roza=1;
-
- all.forEach(day=>{
-  if(day.date.hijri.month.number===9 && roza<=30){
-   doc.setFontSize(10);
-   doc.text(
-   `${roza}. ${day.date.gregorian.date} | Sehri: ${convert12(day.timings.Fajr)} | Iftar: ${convert12(day.timings.Maghrib)}`,
-   10,y);
-   y+=6;
-   if(y>280){doc.addPage();y=20;}
-   roza++;
-  }
- });
-
- doc.save(`Ramadan_2026_${city}.pdf`);
+if(localStorage.getItem("loggedIn")==="true"){
+    showHome();
 }
 </script>
 
