@@ -1,82 +1,137 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Google Drive Videos</title>
+<!-- 🔥 Free Fire Like Sender (Blogger Compatible) -->
+
+<!-- HTML -->
+<div class="like-container">
+  <h2>🔥 Free Fire Like Sender</h2>
+  <label for="uid">🎮 Enter UID:</label>
+  <input type="text" id="uid" placeholder="Uid: 123456789" />
+  <label for="region">🌍 Select Region:</label>
+  <select id="region">
+    <option value="bd">🇧🇩 Bangladesh</option>
+    <option value="ind">🇮🇳 India</option>
+    <option value="br">🇧🇷 Brazil</option>
+  </select>
+  <button id="sendBtn">🚀 Send Like</button>
+  <div id="result" class="result"></div>
+
+  <!-- 🔹 Social Links -->
+  <div class="social-links">
+    <a href="https://t.me/teetaroo_bot" target="_blank">📢 Join Telegram</a>
+    <a href="https://youtube.com/@voolpe_dsd" target="_blank">▶️ Subscribe YouTube</a>
+  </div>
+</div>
+
+<!-- CSS -->
 <style>
-body{background:#0f172a;color:white;font-family:Arial;margin:0}
-header{background:#020617;padding:15px;display:flex;justify-content:space-between}
-button{padding:8px 15px;border:none;border-radius:6px;cursor:pointer}
-.logout{background:red;color:white}
-.container{padding:20px}
-.video-box{margin-bottom:30px;background:#1e293b;padding:15px;border-radius:12px}
-iframe{width:100%;height:220px;border-radius:10px}
-.login-box{max-width:350px;margin:100px auto}
-input{width:100%;padding:10px;margin:10px 0}
+.like-container {
+  background: #302C2C;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  color: #333;
+  font-family: "Segoe UI", sans-serif;
+}
+.like-container h2 {
+  color: #F3F2F2;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+.like-container input,
+.like-container select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fafafa;
+  color: #333;
+}
+.like-container button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+  transition: transform .2s, box-shadow .2s;
+}
+.like-container button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+.like-container button:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+.result {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  display: none;
+  text-align: left;
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  color: #333;
+  white-space: pre-line;
+}
+.result.error { 
+  background: #ffe5e5;
+  border: 1px solid #ffaaaa;
+  color: #b00020;
+}
+.social-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.social-links a {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+  transition: transform .2s, box-shadow .2s;
+}
+.social-links a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
 </style>
-</head>
-
-<body>
-
-<div id="loginPage" class="login-box">
-<h2>Login</h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<p id="error" style="color:red;display:none;">Login Failed</p>
-</div>
-
-<div id="homePage" style="display:none;">
-<header>
-<h3>🎬 Google Drive Videos</h3>
-<button class="logout" onclick="logout()">Logout</button>
-</header>
-
-<div class="container">
-
-<div class="video-box">
-<h4>Video 1</h4>
-<iframe src="https://drive.google.com/file/d/1O9FQ9_5ydw-BkrN06IGYepsCvlY07DrX/preview" allow="autoplay"></iframe>
-</div>
-
-<div class="video-box">
-<h4>Video 2</h4>
-<iframe src="https://drive.google.com/file/d/1Ohf8UvZaFM6fyMfsMZARFmuP5itLjIzD/preview" allow="autoplay"></iframe>
-</div>
-
-</div>
-</div>
 
 <script>
-const USERNAME="admin";
-const PASSWORD="12345";
+async function verifySite() {
+  try {
+    const res = await fetch("https://blogger-cheak2.vercel.app/api/check", {
+      headers: { "x-site-token": "Panzer@320" }
+    });
+    const data = await res.json();
+    console.log("Verification:", data);
 
-function login(){
-    let u=document.getElementById("username").value;
-    let p=document.getElementById("password").value;
-
-    if(u===USERNAME && p===PASSWORD){
-        localStorage.setItem("loggedIn","true");
-        showHome();
-    }else{
-        document.getElementById("error").style.display="block";
+    // শুধু console-এ লগ করবে
+    if (data.valid) {
+      console.log("✅ Authorized Website");
+    } else {
+      console.warn("❌ Unauthorized:", data.error || "Unknown error");
     }
+  } catch(e) {
+    console.error("🚨 Failed to fetch:", e.message);
+  }
 }
-
-function logout(){
-    localStorage.removeItem("loggedIn");
-    location.reload();
-}
-
-function showHome(){
-    document.getElementById("loginPage").style.display="none";
-    document.getElementById("homePage").style.display="block";
-}
-
-if(localStorage.getItem("loggedIn")==="true"){
-    showHome();
-}
+verifySite();
 </script>
 
-</body>
-</html>
+
+    
