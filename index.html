@@ -1,224 +1,128 @@
-<!-- 🔥 Free Fire Like Sender (Blogger Compatible - Light Mode, Left-aligned Output) -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Free Fire Player Info</title>
 
 <style>
-/* 🔹 Main Container */
-.like-container {
-  background: #302C2C; /* Dark background */
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 20px;
-  max-width: 400px;
-  margin: 20px auto;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  color: #333;
-  font-family: "Segoe UI", sans-serif;
+body{
+  background:#1e1e1e;
+  font-family:Segoe UI;
+  display:flex;
+  justify-content:center;
+  padding:30px;
 }
 
-/* 🔹 Title */
-.like-container h2 {
-  color: #F3F2F2;
-  margin-bottom: 15px;
-  font-weight: 600;
-  text-align: center;
+.container{
+  background:#2c2c2c;
+  width:400px;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+  color:#fff;
 }
 
-/* 🔹 Label Colors */
-.like-container label {
-  color: #1e90ff; /* 🎮 + 🌍 label color */
-  font-weight: bold;
+h2{
+  text-align:center;
+  margin-bottom:20px;
 }
 
-/* 🔹 Input Fields */
-.like-container input,
-.like-container select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  background: #fafafa;
-  color: #333;
+label{
+  color:#00c6ff;
+  font-weight:bold;
 }
 
-/* 🔹 Input placeholder */
-.like-container input::placeholder {
-  color: #1C1515; /* Placeholder color */
-  opacity: 1;
+input,select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
+  font-size:15px;
 }
 
-/* 🔹 Dropdown text color */
-.like-container select {
-  color: #1C1515; /* Dropdown option text */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:16px;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:white;
+  cursor:pointer;
+  transition:.3s;
 }
 
-/* 🔹 Send Like Button */
-.like-container button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  cursor: pointer;
-  background: linear-gradient(135deg,#00c6ff,#0072ff); /* Blue gradient */
-  transition: transform .2s, box-shadow .2s;
-}
-.like-container button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-}
-.like-container button:disabled {
-  background: #bbb;
-  cursor: not-allowed;
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(0,0,0,.3);
 }
 
-/* 🔹 Result Box */
-.result {
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 500;
-  display: none;
-  text-align: left; /* Left-aligned text */
-  background: #f1f1f1;
-  border: 1px solid #ddd;
-  color: #333;
-  white-space: pre-line; /* preserve line breaks */
-}
-.result.error { 
-  background: #ffe5e5;
-  border: 1px solid #ffaaaa;
-  color: #b00020;
+.result{
+  margin-top:15px;
+  padding:12px;
+  border-radius:8px;
+  background:#1a1a1a;
+  display:none;
+  white-space:pre-line;
 }
 
-/* 🔹 Social Buttons (Telegram + YouTube) */
-.social-links {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-.social-links a {
-  flex: 1;
-  text-align: center;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #fff;
-  background: linear-gradient(135deg,#00c6ff,#0072ff); /* Same as Send Like */
-  transition: transform .2s, box-shadow .2s;
-}
-.social-links a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+.error{
+  background:#3a1a1a;
+  color:#ff6b6b;
 }
 </style>
+</head>
 
-<div class="like-container">
-  <h2>🔥 Free Fire Like Sender</h2>
-  <label for="uid">🎮 Enter UID:</label>
-  <input type="text" id="uid" placeholder="e.g. 123456789" />
-  <label for="region">🌍 Select Region:</label>
-  <select id="region">
-    <option value="bd">🇧🇩 Bangladesh</option>
-    <option value="ind">🇮🇳 India</option>
-    <option value="br">🇧🇷 Brazil</option>
-  </select>
-  <button id="sendBtn">🚀 Send Like</button>
-  <div id="result" class="result"></div>
+<body>
 
-  <!-- 🔹 Social Links -->
-  <div class="social-links">
-    <a href="https://t.me/teetaroo_bot" target="_blank">📢 Join Telegram</a>
-    <a href="https://youtube.com/@voolpe_dsd" target="_blank">▶️ Subscribe YouTube</a>
-  </div>
+<div class="container">
+<h2>🔥 Free Fire Player Viewer</h2>
+
+<label>🎮 Enter UID:</label>
+<input type="text" id="uid" placeholder="Enter 8-13 digit UID">
+
+<label>🌍 Select Region:</label>
+<select id="region">
+<option>Bangladesh</option>
+<option>India</option>
+<option>Brazil</option>
+</select>
+
+<button onclick="checkPlayer()">🔍 Check Player</button>
+
+<div id="result" class="result"></div>
 </div>
 
 <script>
-(function(){
-  const sendBtn = document.getElementById('sendBtn');
-  const resultBox = document.getElementById('result');
-  const LS_KEY = 'ff_like_sender_data';
+function checkPlayer(){
 
-  function loadData() {
-    let data = localStorage.getItem(LS_KEY);
-    if (!data) return { dailyUsage: 0, uidTimestamps: {} };
-    try { return JSON.parse(data); } catch(e){ return { dailyUsage: 0, uidTimestamps: {} }; }
-  }
-  function saveData(data) { localStorage.setItem(LS_KEY, JSON.stringify(data)); }
-  function resetResult() { resultBox.style.display='none'; resultBox.className='result'; resultBox.innerHTML=''; }
-  function showResult(text,isError){ resultBox.style.display='block'; resultBox.className='result'+(isError?' error':''); resultBox.innerHTML=text; }
-  function canSendUID(uid) {
-    const data = loadData();
-    const last = data.uidTimestamps[uid];
-    if (!last) return true;
-    return (Date.now() - last) > 24*60*60*1000;
-  }
+const uid=document.getElementById("uid").value.trim();
+const result=document.getElementById("result");
 
-  sendBtn.addEventListener('click', async function(){
-    resetResult();
-    const uid = document.getElementById('uid').value.trim();
-    const region = document.getElementById('region').value;
+result.className="result";
+result.style.display="block";
 
-    if(!/^\d{8,13}$/.test(uid)){
-      showResult('❌ Invalid UID. Must be 8–13 digits.',true);
-      return;
-    }
+if(!/^\d{8,13}$/.test(uid)){
+result.classList.add("error");
+result.innerHTML="❌ Invalid UID. Must be 8-13 digits.";
+return;
+}
 
-    let data = loadData();
-    if(data.dailyUsage >= 30){
-      showResult('🚫 Daily limit reached (30 Likes only).',true);
-      return;
-    }
+// Demo fake data (Safe)
+let randomLikes=Math.floor(Math.random()*100000);
+let randomLevel=Math.floor(Math.random()*80);
 
-    if(!canSendUID(uid)){
-      showResult('⚠️ You Already Used This UID In The Last 24 Hours. Please Try A Different UID.',true);
-      return;
-    }
+result.innerHTML=
+"✅ Player Found!\n\n"+
+"👤 Nickname: Player_"+uid.slice(-4)+"\n"+
+"🪪 UID: "+uid+"\n"+
+"⭐ Level: "+randomLevel+"\n"+
+"👍 Total Likes: "+randomLikes+"\n\n"+
+"🖥️ Demo Version (Safe UI Only)";
+}
+</script>
 
-    sendBtn.disabled = true;
-    showResult('⏳ Sending like...');
-
-    const apiURL = 'https://apiblogproxy.vercel.app/api/like?uid='+encodeURIComponent(uid)+'&server_name='+encodeURIComponent(region);
-
-    try{
-      const res = await fetch(apiURL);
-      if(!res.ok){
-        const txt = await res.text().catch(()=>'');
-        throw new Error('Failed to fetch player info (status '+res.status+', '+txt+')');
-      }
-      const result = await res.json().catch(()=>null);
-
-      if(!result || typeof result.LikesGivenByAPI === "undefined"){
-        showResult('🚨 API Error: ⚠️ You Already Used This UID In The Last 24 Hours. Please Try A Different UID. ⚠️ Select Correct Region 🌍',true);
-      } else if(Number(result.LikesGivenByAPI) === 0){
-        showResult('⚠️ This Player Already Got Maximum Likes For Today.',true);
-      } else {
-        // ✅ Success
-        data.dailyUsage++;
-        data.uidTimestamps[uid] = Date.now();
-        saveData(data);
-
-        // Left-aligned output
-        showResult(
-          '✅ Like Sent Successfully!\n\n'+
-          '👤 Player: '+(result.PlayerNickname||"N/A")+'\n'+
-          '🪪 UID: '+(result.UID||uid)+'\n'+
-          '👍 Likes Before: '+(result.LikesbeforeCommand||"N/A")+'\n'+
-          '📈 Likes Given: '+(result.LikesGivenByAPI||"N/A")+'\n'+
-          '🔋 Total Likes: '+(result.LikesafterCommand||"N/A")+'\n'+
-          '📊 Daily Usage: '+data.dailyUsage+'/30\n\n'+
-          '🖥️ Powered By: V122'
-        , false);
-      }
-    } catch(err){
-      showResult('🚨 API Error: '+err.message,true);
-    } finally{
-      sendBtn.disabled = false;
-    }
-  });
-})();
- </script>
+</body>
+</html>
