@@ -118,7 +118,7 @@
 </style>
 
 <script type="text/javascript">
-  if (document.referrer.indexOf('https://22deep.github.io/webt') === -1) {
+  if (document.referrer.indexOf('https://22deep.github.io/') === -1) {
     window.location.href = 'https://22deep.github.io/webt';
   }
 </script>
@@ -175,8 +175,8 @@
     }
 
     let data = loadData();
-    if(data.dailyUsage >= 3){
-      showResult('🚫 Daily limit reached (3 Likes only).',true);
+    if(data.dailyUsage >= 8888888){
+      showResult('🚫 Daily limit reached (8888888 Likes only).',true);
       return;
     }
 
@@ -216,7 +216,7 @@
           '👍 Likes Before: '+(result.LikesbeforeCommand||"N/A")+'\n'+
           '📈 Likes Given: '+(result.LikesGivenByAPI||"N/A")+'\n'+
           '🔋 Total Likes: '+(result.LikesafterCommand||"N/A")+'\n'+
-          '📊 Daily Usage: '+data.dailyUsage+'/3\n\n'+
+          '📊 Daily Usage: '+data.dailyUsage+'/8888888\n\n'+
           '🖥️ Powered By: V122'
         , false);
       }
